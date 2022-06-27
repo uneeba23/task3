@@ -1,0 +1,12 @@
+node_modules
+**/videos/**
+*/videos/*
+**/**/videos/**
+*/*/videos/*
+cypress/videos/*
+cypress/videos/**
+cypress/videos/working-crawler.js.mp4
+report.csv
+**/report.csv
+**/**/report.csv
+**/**/**/report.csv

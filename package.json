@@ -1,0 +1,20 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "record": "npx cypress run --record --key bc9c11a1-020c-454b-bb57-38c500b0fd13",
+    "start": "cypress open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.3.6",
+    "cypress": "^9.5.3",
+    "mocha": "^10.0.0",
+    "sinon-chai": "^3.7.0"
+  }
+}
