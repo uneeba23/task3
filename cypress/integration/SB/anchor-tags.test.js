@@ -7,7 +7,7 @@ const sinon = require('sinon');
 
 
 /** Local statics and configuration */
-const pageLinks = require('../../fixtures/vpnranks/test.json');
+const pageLinks = require('../../fixtures/SB/test.json');
 
 
 chai.use(require('sinon-chai'));
@@ -53,7 +53,7 @@ describe('Testing all pages', () => {
     });
 
     it('Creating report file', () => {
-        cy.writeFile('cypress/fixtures/vpnranks/report.csv', 'Path, CssPath, HREF\r\n');
+        cy.writeFile('cypress/fixtures/SB/report.csv', 'Path, CssPath, HREF\r\n');
     });
 
     pageLinks
@@ -61,7 +61,7 @@ describe('Testing all pages', () => {
 
             describe(`Checking Website ${locationToUse}`, () => {
                 it(`Visit website: ${locationToUse}`, () => {
-                    
+
                     cy.visit(locationToUse);
                 });
 
@@ -107,24 +107,30 @@ describe('Testing all pages', () => {
                                     cssPath,
                                 });
 
-                                expect(useElement)
-                                    .to.have.property('href')
-                                    .not.contain('undefined')
-                                    .not.contain('javascript:void(0);');
+                                try {
+                                    expect(useElement)
+                                        .to.have.property('href')
+                                        .not.contain('undefined')
+                                        .not.contain('javascript:void(0);');
 
+                                    if (!href)
+                                        return;
 
-                                cy
-                                    .request(href, { failOnStatusCode: false })
-                                    .then(innerAnchorResponse => {
-                                        const { status } = innerAnchorResponse;
+                                    cy
+                                        .request(href, { failOnStatusCode: false })
+                                        .then(innerAnchorResponse => {
+                                            const { status } = innerAnchorResponse;
 
-                                        expect(status)
-                                            .to
-                                            .eq(200);
+                                            expect(status)
+                                                .to
+                                                .eq(200);
 
-                                        failed = failed
-                                            .filter(object => object.href !== href);
-                                    })
+                                            failed = failed
+                                                .filter(object => object.href !== href);
+                                        })
+                                } catch (exc) {
+                                    failedStatus = true;
+                                }
                             })
                             .then(anchorArray => cy.log(`Tested ${anchorArray.length} links on ${locationToUse}`));
                     } catch (exc) {
@@ -148,6 +154,12 @@ describe('Testing all pages', () => {
                                     .push(
                                         `\r\n${path},${cssPathToUse},${href}`
                                     )
+
+                                const contentToAdd = writeToFile.join('');
+
+                                cy.writeFile('cypress/fixtures/SB/report.csv', contentToAdd, { flag: 'a+' });
+
+                                writeToFile = []
                             }
                         )
                 })
@@ -155,9 +167,5 @@ describe('Testing all pages', () => {
 
         });
 
-    it(`Writing to file`, () => {
-        const contentToAdd = writeToFile.join('');
 
-        cy.writeFile('cypress/fixtures/hbomaxcanada/report.csv', contentToAdd, { flag: 'a+' });
-    });
 });

@@ -145,7 +145,7 @@ async function requestFunction(url) {
             });
 
         cy.writeFile(
-            'cypress/fixtures/hbomaxcanada/test2.json',
+            'cypress/fixtures/SB/test.json',
             childrenParsed,
         );
 
